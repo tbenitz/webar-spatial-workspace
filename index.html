@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#07080c" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>WebAR Spatial Workspace</title>
+  <meta name="description" content="Pin videos and images into physical space with client-side WebAR. No servers, no accounts." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="overlay">
+    <div id="gesture-layer"></div>
+    <header class="topbar">
+      <div class="brand">
+        <span class="mark" aria-hidden="true"></span>
+        <div>
+          <strong>Spatial Workspace</strong>
+          <small id="status-line">Ready</small>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button id="btn-snap" class="icon-btn" type="button" aria-pressed="false" title="Axis-lock snap">SNAP</button>
+        <button id="btn-reset" class="icon-btn" type="button" title="Reset space">RESET</button>
+        <button id="btn-export" class="icon-btn" type="button" title="Export layout JSON">JSON</button>
+      </div>
+    </header>
+
+    <div id="banner" class="banner hidden" role="status"></div>
+
+    <section id="landing" class="landing">
+      <p class="eyebrow">Client-side WebAR · GitHub Pages</p>
+      <h1>Turn any room into a persistent media canvas.</h1>
+      <p class="lede">
+        Scan surfaces, lock virtual screens to walls and tables, then drag, pinch, and twist
+        local videos and photos in real space. Nothing leaves this device.
+      </p>
+      <div id="ar-button-mount"></div>
+      <button id="btn-preview" class="ghost-btn" type="button">Desktop preview</button>
+      <ul class="compat">
+        <li>Best on Android Chrome with WebXR AR</li>
+        <li>HTTPS required · camera permission on first launch</li>
+        <li>iOS WebXR AR support is still limited by browser</li>
+      </ul>
+    </section>
+
+    <div id="crosshair" class="crosshair hidden" aria-hidden="true"></div>
+
+    <aside id="inspector" class="inspector hidden">
+      <div class="inspector-head">
+        <span id="sel-name">Screen</span>
+        <button id="btn-deselect" class="text-btn" type="button">Done</button>
+      </div>
+      <div class="scrub-row hidden" id="video-controls">
+        <button id="btn-play" class="chip" type="button">Play</button>
+        <button id="btn-loop" class="chip" type="button">Loop</button>
+        <input id="scrub" type="range" min="0" max="1000" value="0" />
+      </div>
+      <div class="inspector-actions">
+        <button id="btn-dup" class="chip" type="button">Duplicate</button>
+        <button id="btn-relink" class="chip" type="button">Relink file</button>
+        <button id="btn-delete" class="chip danger" type="button">Delete</button>
+      </div>
+    </aside>
+
+    <footer class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-row">
+        <button id="btn-add-image" class="action" type="button">
+          <span>Add Image</span>
+          <small>JPG · PNG · WEBP</small>
+        </button>
+        <button id="btn-add-video" class="action" type="button">
+          <span>Add Video</span>
+          <small>MP4 · WEBM</small>
+        </button>
+        <button id="btn-import" class="action muted" type="button">
+          <span>Load Layout</span>
+          <small>JSON snapshot</small>
+        </button>
+      </div>
+      <p class="hint" id="place-hint">Aim the reticle at a wall or table, then add media.</p>
+    </footer>
+
+    <input id="file-image" type="file" accept="image/jpeg,image/png,image/webp,image/*" hidden />
+    <input id="file-video" type="file" accept="video/mp4,video/webm,video/*" hidden />
+    <input id="file-json" type="file" accept="application/json,.json" hidden />
+    <input id="file-relink" type="file" accept="image/*,video/*" hidden />
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
