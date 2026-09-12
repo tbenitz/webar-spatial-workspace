@@ -4,6 +4,7 @@ export const ui = {
   overlay: $("overlay"),
   landing: $("landing"),
   banner: $("banner"),
+  debug: $("debug"),
   status: $("status-line"),
   hint: $("place-hint"),
   inspector: $("inspector"),
@@ -16,10 +17,13 @@ export const ui = {
   reset: $("btn-reset"),
   exportBtn: $("btn-export"),
   importBtn: $("btn-import"),
-  addImage: $("btn-add-image"),
-  addVideo: $("btn-add-video"),
-  preview: $("btn-preview"),
-  arMount: $("ar-button-mount"),
+  drop: $("btn-drop"),
+  exit: $("btn-exit"),
+  ar: $("btn-ar"),
+  arHero: $("btn-ar-hero"),
+  room: $("btn-room"),
+  compat: $("compat-line"),
+  tray: $("object-tray"),
   fileImage: $("file-image"),
   fileVideo: $("file-video"),
   fileJson: $("file-json"),
@@ -47,12 +51,16 @@ export function hideBanner() {
   ui.banner.classList.add("hidden");
 }
 
+export function logDebug(text) {
+  if (!ui.debug) return;
+  ui.debug.classList.remove("hidden");
+  ui.debug.textContent = `${new Date().toISOString().slice(11, 19)} ${text}\n` + ui.debug.textContent;
+}
+
 export function haptic(ms = 12) {
   try {
     if (navigator.vibrate) navigator.vibrate(ms);
-  } catch {
-    /* ignore */
-  }
+  } catch { /* ignore */ }
 }
 
 export function downloadJson(filename, data) {
