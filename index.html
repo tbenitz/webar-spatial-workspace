@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>WebAR Spatial Workspace</title>
-  <meta name="description" content="Pin videos and images into physical space with client-side WebAR. No servers, no accounts." />
+  <meta name="description" content="Map a whole room in WebAR. Pin screens and objects to walls, floors, and space behind you." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="css/styles.css" />
   <script type="importmap">
@@ -28,39 +28,31 @@
         <span class="mark" aria-hidden="true"></span>
         <div>
           <strong>Spatial Workspace</strong>
-          <small id="status-line">Ready</small>
+          <small id="status-line">Checking device…</small>
         </div>
       </div>
       <div class="top-actions">
-        <button id="btn-snap" class="icon-btn" type="button" aria-pressed="false" title="Axis-lock snap">SNAP</button>
-        <button id="btn-reset" class="icon-btn" type="button" title="Reset space">RESET</button>
-        <button id="btn-export" class="icon-btn" type="button" title="Export layout JSON">JSON</button>
+        <button id="btn-ar" class="icon-btn primary" type="button">START AR</button>
+        <button id="btn-snap" class="icon-btn" type="button" aria-pressed="false">SNAP</button>
+        <button id="btn-reset" class="icon-btn" type="button">RESET</button>
+        <button id="btn-export" class="icon-btn" type="button">JSON</button>
       </div>
     </header>
-
     <div id="banner" class="banner hidden" role="status"></div>
-
+    <pre id="debug" class="debug hidden"></pre>
     <section id="landing" class="landing">
-      <p class="eyebrow">Client-side WebAR · GitHub Pages</p>
-      <h1>Turn any room into a persistent media canvas.</h1>
-      <p class="lede">
-        Scan surfaces, lock virtual screens to walls and tables, then drag, pinch, and twist
-        local videos and photos in real space. Nothing leaves this device.
-      </p>
-      <div id="ar-button-mount"></div>
-      <button id="btn-preview" class="ghost-btn" type="button">Desktop preview</button>
-      <ul class="compat">
-        <li>Best on Android Chrome with WebXR AR</li>
-        <li>HTTPS required · camera permission on first launch</li>
-        <li>iOS WebXR AR support is still limited by browser</li>
-      </ul>
+      <p class="eyebrow">Room-scale WebAR</p>
+      <h1>Map the whole room.</h1>
+      <p class="lede">Walk, turn 90°, look behind you. Screens and objects stay locked to real surfaces.</p>
+      <button id="btn-ar-hero" class="hero-btn" type="button">Start AR on this phone</button>
+      <button id="btn-room" class="ghost-btn" type="button">Enter 3D room (look around)</button>
+      <p id="compat-line" class="compat-line">Detecting WebXR…</p>
     </section>
-
     <div id="crosshair" class="crosshair hidden" aria-hidden="true"></div>
-
+    <div id="look-hint" class="look-hint hidden">Drag to look · objects stay in the room</div>
     <aside id="inspector" class="inspector hidden">
       <div class="inspector-head">
-        <span id="sel-name">Screen</span>
+        <span id="sel-name">Object</span>
         <button id="btn-deselect" class="text-btn" type="button">Done</button>
       </div>
       <div class="scrub-row hidden" id="video-controls">
@@ -70,36 +62,34 @@
       </div>
       <div class="inspector-actions">
         <button id="btn-dup" class="chip" type="button">Duplicate</button>
-        <button id="btn-relink" class="chip" type="button">Relink file</button>
+        <button id="btn-relink" class="chip" type="button">Relink</button>
         <button id="btn-delete" class="chip danger" type="button">Delete</button>
       </div>
     </aside>
-
     <footer class="sheet">
       <div class="sheet-handle"></div>
-      <div class="sheet-row">
-        <button id="btn-add-image" class="action" type="button">
-          <span>Add Image</span>
-          <small>JPG · PNG · WEBP</small>
-        </button>
-        <button id="btn-add-video" class="action" type="button">
-          <span>Add Video</span>
-          <small>MP4 · WEBM</small>
-        </button>
-        <button id="btn-import" class="action muted" type="button">
-          <span>Load Layout</span>
-          <small>JSON snapshot</small>
-        </button>
+      <div class="tray" id="object-tray">
+        <button class="tool" data-place="image" type="button">Image</button>
+        <button class="tool" data-place="video" type="button">Video</button>
+        <button class="tool on" data-place="screen" type="button">Screen</button>
+        <button class="tool" data-place="frame" type="button">Frame</button>
+        <button class="tool" data-place="box" type="button">Box</button>
+        <button class="tool" data-place="lamp" type="button">Lamp</button>
+        <button class="tool" data-place="sign" type="button">Sign</button>
+        <button class="tool" data-place="marker" type="button">Pin</button>
       </div>
-      <p class="hint" id="place-hint">Aim the reticle at a wall or table, then add media.</p>
+      <div class="sheet-row compact">
+        <button id="btn-drop" class="action" type="button"><span>Drop here</span><small>Place on reticle</small></button>
+        <button id="btn-import" class="action muted" type="button"><span>Load layout</span><small>JSON snapshot</small></button>
+        <button id="btn-exit" class="action muted" type="button"><span>Exit session</span><small>Leave AR / room</small></button>
+      </div>
+      <p class="hint" id="place-hint">Aim at a wall, floor, or table, then tap Drop here.</p>
     </footer>
-
     <input id="file-image" type="file" accept="image/jpeg,image/png,image/webp,image/*" hidden />
     <input id="file-video" type="file" accept="video/mp4,video/webm,video/*" hidden />
     <input id="file-json" type="file" accept="application/json,.json" hidden />
     <input id="file-relink" type="file" accept="image/*,video/*" hidden />
   </div>
-
   <script type="module" src="js/app.js"></script>
 </body>
 </html>
