@@ -16,13 +16,7 @@ function makeGizmo(w, h) {
   const box = new THREE.BoxHelper(new THREE.Mesh(new THREE.PlaneGeometry(w, h)), 0x7cd4ff);
   box.material.depthTest = false;
   group.add(box);
-
-  const corners = [
-    [-w / 2, h / 2],
-    [w / 2, h / 2],
-    [-w / 2, -h / 2],
-    [w / 2, -h / 2],
-  ];
+  const corners = [[-w / 2, h / 2], [w / 2, h / 2], [-w / 2, -h / 2], [w / 2, -h / 2]];
   const dotGeo = new THREE.SphereGeometry(0.012, 10, 10);
   const dotMat = new THREE.MeshBasicMaterial({ color: 0xc9a6ff });
   for (const [x, y] of corners) {
@@ -69,7 +63,6 @@ export function createVideoScreen(file, objectUrl, listener) {
   video.preload = "metadata";
   video.muted = false;
   video.setAttribute("playsinline", "");
-
   return new Promise((resolve, reject) => {
     const onReady = () => {
       video.removeEventListener("loadedmetadata", onReady);
@@ -139,28 +132,17 @@ function buildScreen({ type, name, fileName, mime, texture, aspect, objectUrl, v
   const width = height * aspect;
   const group = new THREE.Group();
   group.name = `screen-${seq++}`;
-
   const geo = new THREE.PlaneGeometry(width, height);
-  const mat = new THREE.MeshBasicMaterial({
-    map: texture,
-    side: THREE.DoubleSide,
-    toneMapped: false,
-  });
+  const mat = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide, toneMapped: false });
   const plane = new THREE.Mesh(geo, mat);
   plane.name = "media";
   plane.position.z = 0.012;
-
-  const frame = new THREE.Mesh(
-    new THREE.BoxGeometry(width + 0.03, height + 0.03, 0.02),
-    frameMaterial()
-  );
+  const frame = new THREE.Mesh(new THREE.BoxGeometry(width + 0.03, height + 0.03, 0.02), frameMaterial());
   frame.position.z = 0;
-
   const gizmo = makeGizmo(width + 0.04, height + 0.04);
-
   group.add(frame, plane, gizmo);
   group.userData = {
-    kind: "mediaScreen",
+    kind: "item",
     type,
     name,
     fileName,
